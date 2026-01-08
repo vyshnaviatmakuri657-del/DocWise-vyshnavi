@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligent Document Analyzer</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- PDF.js for PDF reading -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <!-- Mammoth.js for DOCX reading -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- Franc language detection library (supports 180+ languages) -->
+  <script src="https://unpkg.com/franc-min@6/franc-min.js"></script>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <!-- Notification Popup -->
+  <div id="notification" class="notification">
+    <span id="notificationText"></span>
+  </div>
+
+  <!-- Loading Popup -->
+  <div id="loadingPopup" class="loading-popup">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Analyzing your document...</p>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo">
+      <svg width="50" height="50" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="23" fill="none" stroke="white" stroke-width="2"/>
+        <path d="M15 25 L22 32 L35 18" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="25" r="3" fill="white"/>
+      </svg>
+    </div>
+    <h1>🔍 Intelligent Document Analyzer</h1>
+    <p class="tagline">Analyze text, PDF, and DOCX files with AI-powered insights</p>
+  </header>
+
+  <main>
+    <section class="input-section">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="text">📝 Text Input</button>
+        <button class="tab-btn" data-tab="file">📄 Upload File</button>
+      </div>
+
+      <div class="tab-content active" id="textTab">
+        <h2>Enter Text for Analysis</h2>
+        <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+        <button id="analyzeBtn" class="btn-primary">
+          <span class="btn-icon">🚀</span>
+          Analyze Document
+        </button>
+      </div>
+
+      <div class="tab-content" id="fileTab">
+        <h2>Upload PDF or DOCX File</h2>
+        <div class="upload-area" id="uploadArea">
+          <svg class="upload-icon" width="60" height="60" viewBox="0 0 60 60">
+            <path d="M30 10 L30 40 M20 30 L30 20 L40 30" stroke="#007bff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="10" y="40" width="40" height="10" rx="2" fill="none" stroke="#007bff" stroke-width="2"/>
+          </svg>
+          <p class="upload-text">Drag & Drop your file here</p>
+          <p class="upload-subtext">or</p>
+          <label for="fileInput" class="btn-secondary">Browse Files</label>
+          <input type="file" id="fileInput" accept=".pdf,.docx" hidden>
+          <p class="file-types">Supported: PDF, DOCX (Max 10MB)</p>
+        </div>
+        <div id="fileInfo" class="file-info"></div>
+        <button id="analyzeFileBtn" class="btn-primary" style="display:none;">
+          <span class="btn-icon">🚀</span>
+          Analyze File
+        </button>
+      </div>
+    </section>
+
+    <section class="results-section" id="resultsSection">
+      <div class="results-header">
+        <h2>📊 Analysis Results</h2>
+        <button id="downloadReportBtn" class="btn-download" style="display:none;">
+          <span class="btn-icon">📥</span>
+          Download Report
+        </button>
+      </div>
+      <div class="results-grid">
+        <div class="card fade-in" style="animation-delay: 0.1s">
+          <div class="card-header">
+            <span class="card-icon">📋</span>
+            <h3>Summary</h3>
+          </div>
+          <p id="summary" class="result-text">--</p>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.2s">
+          <div class="card-header">
+            <span class="card-icon">🔑</span>
+            <h3>Keywords</h3>
+          </div>
+          <ul id="keywords" class="keywords-list"></ul>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.3s">
+          <div class="card-header">
+            <span class="card-icon">😊</span>
+            <h3>Sentiment</h3>
+          </div>
+          <div id="sentiment" class="sentiment-badge">--</div>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.4s">
+          <div class="card-header">
+            <span class="card-icon">🌐</span>
+            <h3>Language</h3>
+          </div>
+          <p id="language" class="result-text">--</p>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.5s">
+          <div class="card-header">
+            <span class="card-icon">📊</span>
+            <h3>Word Count</h3>
+          </div>
+          <p id="wordCount" class="result-number">--</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ | Powered by Advanced NLP</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
